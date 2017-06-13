@@ -7,6 +7,11 @@ public class RBTree {
 		root = Node.top;
 	}
 	public void print(Node tree, int level) {
+		if(tree.isNIL())
+		{
+			System.out.println("Null");
+			return;
+		}
 		if (!tree.right.isNIL())
 			print(tree.right, level + 1);
 		else
@@ -18,9 +23,9 @@ public class RBTree {
 		for(int i = 0; i < level; i++)
 			System.out.print("	");
 		if(tree.RB)
-			System.out.println(tree.val+" Red");
+			System.out.println(tree.val+" R");
 		else
-			System.out.println(tree.val+" Black");
+			System.out.println(tree.val+" B");
 		if (!tree.left.isNIL())
 			print(tree.left, level + 1);
 		else
@@ -29,7 +34,7 @@ public class RBTree {
 				System.out.print("	");
 			System.out.println("nil");
 		}
-		}
+	}
 	public void insert(Node tree, Node n)
 	{
 		insert_0(tree, n);
@@ -186,6 +191,10 @@ public class RBTree {
 			org.left.parent = org;
 			org.RB = n.RB;
 		}
+		if(n.parent == Node.top&&n.left.isNIL()&&n.right.isNIL())
+		{
+			root = Node.top;
+		}
 		if(!originColor)
 			delete_Fixup(child);
 	}
@@ -307,7 +316,7 @@ public class RBTree {
 	}
 	public void inorder_iter()
 	{
-		int total, nb, bh, curbh;
+		int total, nb, bh, curbh, bs, rs;
 		if(root == null)
 			return;
 		else
@@ -319,6 +328,8 @@ public class RBTree {
 			nb = 0;
 			curbh = 1;
 			bh = 1;
+			bs = 1;
+			rs = 0;
 			while(!stack.isEmpty())
 			{
 				if(!curNode.left.isNIL() && term)
@@ -326,7 +337,12 @@ public class RBTree {
 					curNode = curNode.left;
 					stack.push(curNode);
 					if(!curNode.RB)
+					{
 						curbh++;
+						bs++;
+					}
+					else
+						rs++;
 				}
 				else
 				{
@@ -341,13 +357,18 @@ public class RBTree {
 						curbh--;
 					}
 					term = false;
-					System.out.printf("%d\n",curNode.val);
+					//System.out.printf("%d\n",curNode.val);
 					if(!curNode.right.isNIL())
 					{
 						curNode = curNode.right;
 						stack.push(curNode);
 						if(!curNode.RB)
+						{
 							curbh++;
+							bs++;
+						}
+						else
+							rs++;
 						term = true;
 					}
 				}
@@ -357,6 +378,8 @@ public class RBTree {
 		System.out.println("total = "+total);
 		System.out.println("nb = "+nb);
 		System.out.println("bh = "+bh);
+		System.out.println(bs + " B");
+		System.out.println(rs + " R");
 	}
 	
 	class NodeStack
