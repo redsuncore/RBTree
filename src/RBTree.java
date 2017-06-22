@@ -147,6 +147,44 @@ public class RBTree {
 		else
 			return search(tree.right,val);
 	}
+	public int searchSmallValue(int val)
+	{
+		Node sNode = root;
+		while(!sNode.isNIL())
+		{
+			if(sNode.val >= val)
+			{
+				sNode = sNode.left;
+			}
+			else if(sNode.val < val)
+			{
+				sNode = sNode.right;
+			}
+		}
+		if(sNode.parent.val >= val)
+			return 0;
+		else
+			return sNode.parent.val;
+	}
+	public int searchBigValue(int val)
+	{
+		Node sNode = root;
+		while(!sNode.isNIL())
+		{
+			if(sNode.val <= val)
+			{
+				sNode = sNode.right;
+			}
+			else if(sNode.val > val)
+			{
+				sNode = sNode.left;
+			}
+		}
+		if(sNode.parent.val <= val)
+			return 0;
+		else
+			return sNode.parent.val;
+	}
 	public Node minimum(Node n)
 	{
 		Node find = n;
@@ -313,6 +351,32 @@ public class RBTree {
 			n=n.parent;
 		}
 		return n;
+	}
+	public String search_file(int num)
+	{
+		Node sNode = this.search(root, num);
+		int fir, tir;
+		String  fir_s, sec_s, tir_s;
+		
+		fir = searchSmallValue(num);
+		tir = searchBigValue(num);
+		
+		if(fir == 0)
+			fir_s = "NIL";
+		else
+			fir_s = Integer.toString(fir);
+		
+		if(sNode == null)
+			sec_s = "NIL";
+		else
+			sec_s = Integer.toString(sNode.val);
+		
+		if(tir == 0)
+			tir_s = "NIL";
+		else
+			tir_s = Integer.toString(tir);
+		
+		return fir_s + " " + sec_s + " "+ tir_s;
 	}
 	public void inorder_iter()
 	{
